@@ -14,6 +14,7 @@ export RETH_BIN=/usr/local/bin/reth
 
 # Data directories
 export BEACOND_DATA=/app/var/beacond
+export BEACOND_CONFIG=$BEACOND_DATA/config
 export RETH_DATA=/app/var/reth
 export SEED_DATA_DIR=/app/seed-data-80069
 

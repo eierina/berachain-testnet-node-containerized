@@ -25,4 +25,4 @@ RUN sed -i 's/export CHAIN_SPEC=mainnet/export CHAIN_SPEC=testnet/' env.sh && \
 VOLUME ["/app/var", "/app/logs", "/app/seed-data-80069"]
 
 ENTRYPOINT ["/bin/bash", "-c"]
-CMD ["./setup-reth.sh && ./run-reth.sh"]
+CMD ["bash", "-c", "./setup-reth.sh && ./run-reth.sh"]
