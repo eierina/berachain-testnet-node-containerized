@@ -1,6 +1,7 @@
+# Dockerfile.reth
 FROM ghcr.io/paradigmxyz/reth:v1.1.5
 
-# Install essential tools for scripts
+# Install essential tools
 RUN apt-get update && apt-get install -y \
     bash \
     curl \
@@ -9,14 +10,19 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
+# Copy required files
 COPY env.sh .
 COPY setup-reth.sh .
 COPY run-reth.sh .
 
-# Force testnet configuration
+# Make scripts executable
+RUN chmod +x *.sh
+
+# Configure environment
 RUN sed -i 's/export CHAIN_SPEC=mainnet/export CHAIN_SPEC=testnet/' env.sh && \
     sed -i 's/export MONIKER_NAME=.*/export MONIKER_NAME=camembera/' env.sh
 
 VOLUME ["/app/var", "/app/logs", "/app/seed-data-80069"]
 
-CMD ["/bin/bash", "-c", "./setup-reth.sh && ./run-reth.sh"]
+# Use explicit bash execution
+CMD ["bash", "-c", "./setup-reth.sh && ./run-reth.sh"]
