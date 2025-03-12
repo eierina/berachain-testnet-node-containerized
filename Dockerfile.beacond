@@ -1,12 +1,13 @@
 FROM ubuntu:22.04
 
+# Install required tools
 RUN apt-get update && apt-get install -y \
     curl jq wget ca-certificates --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Download and extract ARM64 binary
+# Download and extract Beacon Kit 1.1.3 ARM64 binary
 RUN mkdir -p /app/bin && \
     cd /app/bin && \
     wget https://github.com/berachain/beacon-kit/releases/download/v1.1.3/beacond-v1.1.3-linux-arm64.tar.gz && \
@@ -15,17 +16,17 @@ RUN mkdir -p /app/bin && \
     chmod +x beacond && \
     rm -rf beacond-v1.1.3-linux-arm64*
 
+# Add binary to PATH
 ENV PATH="/app/bin:${PATH}"
 
-COPY env.sh .
-COPY fetch-berachain-params.sh .
-COPY setup-beacond.sh .
-COPY run-beacond.sh .
+# Copy quickstart scripts
+COPY env.sh fetch-berachain-params.sh setup-beacond.sh run-beacond.sh /app/
 
-# Configure for testnet
-RUN sed -i 's/export CHAIN_SPEC=mainnet/export CHAIN_SPEC=testnet/' env.sh && \
-    sed -i 's/export MONIKER_NAME=.*/export MONIKER_NAME=camembera/' env.sh
+# Make scripts executable
+RUN chmod +x /app/*.sh
 
-VOLUME ["/app/var", "/app/logs", "/app/seed-data-80069"]
+# Copy and set entrypoint script
+COPY entrypoint-beacond.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
-CMD ["/bin/bash", "-c", "./fetch-berachain-params.sh && ./setup-beacond.sh && ./run-beacond.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]

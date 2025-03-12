@@ -6,39 +6,35 @@ services:
       context: .
       dockerfile: Dockerfile.beacond
     volumes:
-      - berachain_data:/app/var
-      - berachain_logs:/app/logs
-      - berachain_seed:/app/seed-data-80069
+      - beacond_data:/app/var/beacond
+      - logs:/app/logs
+      - seed_data:/app/seed-data-80069
     ports:
-      - "26657:26657"  # RPC
-      - "26656:26656"  # P2P
+      - "26657:26657"  # RPC port
+      - "26656:26656"  # P2P port
     networks:
-      - berachain-net
-    restart: unless-stopped
+      - beranet
 
   reth:
     build:
       context: .
       dockerfile: Dockerfile.reth
     volumes:
-      - berachain_data:/app/var
-      - berachain_logs:/app/logs
-      - berachain_seed:/app/seed-data-80069
+      - reth_data:/app/var/reth
+      - logs:/app/logs
+      - seed_data:/app/seed-data-80069
+      - beacond_data:/app/var/beacond:ro  # Read-only access to JWT
     ports:
-      - "9656:8545"    # RPC
-      - "8551:8551"    # Auth
-      - "30303:30303"  # P2P
-    depends_on:
-      - beacond
+      - "8545:8545"    # HTTP RPC port
+      - "30303:30303"  # P2P port
     networks:
-      - berachain-net
-    restart: unless-stopped
+      - beranet
 
 volumes:
-  berachain_data:
-  berachain_logs:
-  berachain_seed:
+  beacond_data:
+  reth_data:
+  logs:
+  seed_data:
 
 networks:
-  berachain-net:
-    driver: bridge
+  beranet:

@@ -15,7 +15,7 @@ $RETH_BIN node 					\
         $BOOTNODES_OPTION			\
 	$PEERS_OPTION				\
 	$IP_OPTION				\
-	--authrpc.addr 0.0.0.0		\
+	--authrpc.addr 127.0.0.1		\
 	--authrpc.port $EL_AUTHRPC_PORT		\
 	--authrpc.jwtsecret $JWT_PATH		\
 	--port $EL_ETH_PORT			\
