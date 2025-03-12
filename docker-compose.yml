@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  beacond:
+    build:
+      context: .
+      dockerfile: Dockerfile.beacond
+    container_name: beracond-container
+    volumes:
+      - berachain_data:/app/var
+      - berachain_logs:/app/logs
+      - berachain_seed:/app/seed-data-80069
+    ports:
+      - "26657:26657"
+    environment:
+      - MY_IP=beacond
+    networks:
+      - berachain-net
+    restart: unless-stopped
+
+  reth:
+    build:
+      context: .
+      dockerfile: Dockerfile.reth
+    container_name: reth-container
+    volumes:
+      - berachain_data:/app/var
+      - berachain_logs:/app/logs
+      - berachain_seed:/app/seed-data-80069
+    ports:
+      - "9656:8545"  # Remapped port as requested
+      - "8551:8551"
+      - "30303:30303"
+    depends_on:
+      - beacond
+    environment:
+      - MY_IP=reth
+    networks:
+      - berachain-net
+    restart: unless-stopped
+
+volumes:
+  berachain_data:
+  berachain_logs:
+  berachain_seed:
+
+networks:
+  berachain-net:
+    driver: bridge

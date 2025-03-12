@@ -1,0 +1,42 @@
+FROM ubuntu:22.04
+
+RUN apt-get update && apt-get install -y \
+    curl \
+    jq \
+    wget \
+    ca-certificates \
+    --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Download reth based on architecture
+RUN mkdir -p /app/bin && \
+    cd /app/bin && \
+    ARCH=$(uname -m) && \
+    if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then \
+        wget https://github.com/paradigmxyz/reth/releases/download/v1.1.5/reth-v1.1.5-aarch64-unknown-linux-gnu.tar.gz; \
+    else \
+        wget https://github.com/paradigmxyz/reth/releases/download/v1.1.5/reth-v1.1.5-x86_64-unknown-linux-gnu.tar.gz; \
+    fi && \
+    tar -xzf reth-*.tar.gz && \
+    mv reth-*/reth . && \
+    chmod +x reth && \
+    rm -rf reth-*
+
+ENV PATH="/app/bin:${PATH}"
+
+# Copy scripts and config
+COPY env.sh /app/
+COPY setup-reth.sh /app/
+COPY run-reth.sh /app/
+
+# Modify env.sh for container environment
+RUN sed -i 's/export CHAIN_SPEC=mainnet/export CHAIN_SPEC=testnet/' /app/env.sh && \
+    sed -i 's/export MONIKER_NAME=.*/export MONIKER_NAME=camembera/' /app/env.sh
+
+VOLUME ["/app/var", "/app/logs", "/app/seed-data-80069"]
+
+EXPOSE 8545 8551 30303
+
+CMD ["/bin/bash", "-c", "sleep 10 && ./setup-reth.sh && ./run-reth.sh"]
