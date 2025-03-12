@@ -1,37 +1,30 @@
 FROM ubuntu:22.04
 
 RUN apt-get update && apt-get install -y \
-    curl \
-    jq \
-    wget \
-    ca-certificates \
-    --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
+    curl jq wget ca-certificates --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Download beacond based on architecture
+# Download and extract ARM64 binary
 RUN mkdir -p /app/bin && \
     cd /app/bin && \
-    ARCH=$(uname -m) && \
-    if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then \
-        wget https://github.com/berachain/beacon-kit/releases/download/v1.1.3/beacond-linux-arm64 -O beacond; \
-    else \
-        wget https://github.com/berachain/beacon-kit/releases/download/v1.1.3/beacond-linux-amd64 -O beacond; \
-    fi && \
-    chmod +x beacond
+    wget https://github.com/berachain/beacon-kit/releases/download/v1.1.3/beacond-v1.1.3-linux-arm64.tar.gz && \
+    tar -xzf beacond-v1.1.3-linux-arm64.tar.gz && \
+    mv beacond-v1.1.3-linux-arm64/beacond . && \
+    chmod +x beacond && \
+    rm -rf beacond-v1.1.3-linux-arm64*
 
 ENV PATH="/app/bin:${PATH}"
 
-# Copy scripts and config
-COPY env.sh /app/
-COPY fetch-berachain-params.sh /app/
-COPY setup-beacond.sh /app/
-COPY run-beacond.sh /app/
+COPY env.sh .
+COPY fetch-berachain-params.sh .
+COPY setup-beacond.sh .
+COPY run-beacond.sh .
 
-# Modify env.sh for container environment
-RUN sed -i 's/export CHAIN_SPEC=mainnet/export CHAIN_SPEC=testnet/' /app/env.sh && \
-    sed -i 's/export MONIKER_NAME=.*/export MONIKER_NAME=camembera/' /app/env.sh
+# Configure for testnet
+RUN sed -i 's/export CHAIN_SPEC=mainnet/export CHAIN_SPEC=testnet/' env.sh && \
+    sed -i 's/export MONIKER_NAME=.*/export MONIKER_NAME=camembera/' env.sh
 
 VOLUME ["/app/var", "/app/logs", "/app/seed-data-80069"]
 
