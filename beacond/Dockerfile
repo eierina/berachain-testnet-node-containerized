@@ -20,11 +20,11 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /usr/local/bin/beacond /usr/local/bin/beacond
-COPY beacond/setup-beacond.sh \
-     beacond/fetch-berachain-params.sh \
-     beacond/run-beacond.sh \
-     beacond/env.sh \
-     beacond/entrypoint.sh \
+COPY setup-beacond.sh \
+     fetch-berachain-params.sh \
+     run-beacond.sh \
+     env.sh \
+     entrypoint.sh \
      ./
 
 RUN chmod +x /entrypoint.sh *.sh
