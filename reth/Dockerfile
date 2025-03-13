@@ -5,11 +5,12 @@ RUN apt-get update && apt-get install -y \
     curl jq \
     && rm -rf /var/lib/apt/lists/*
 
-COPY setup-reth.sh \
-     run-reth.sh \
-     env.sh \
-     entrypoint.sh \
-     ./
+# COPY setup-reth.sh \
+#      run-reth.sh \
+#      env.sh \
+#      entrypoint.sh \
+#      ./
+COPY . .
 
 RUN chmod +x /entrypoint.sh *.sh
 

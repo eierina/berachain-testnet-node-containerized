@@ -3,8 +3,8 @@ version: '3.8'
 services:
   beacond:
     build:
-      context: ./beacond
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: beacond/Dockerfile
     platform: linux/arm64
     environment:
       CHAIN_SPEC: testnet
@@ -21,8 +21,8 @@ services:
 
   reth:
     build:
-      context: ./reth
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: reth/Dockerfile
     platform: linux/arm64
     environment:
       CHAIN_SPEC: testnet
