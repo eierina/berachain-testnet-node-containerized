@@ -8,10 +8,10 @@ while [ ! -f /app/shared/jwt.hex ]; do
 done
 
 # Initialize environment
-source ./env.sh
+source /app/env.sh
 
 # Setup execution client
-./setup-reth.sh
+/app/setup-reth.sh
 
 # Start reth
-exec ./run-reth.sh
+exec /app/run-reth.sh
