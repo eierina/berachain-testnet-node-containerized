@@ -14,7 +14,7 @@ mkdir -p ${BEACOND_DATA} ${BEACOND_CONFIG} ${LOG_DIR} /app/shared
 /app/setup-beacond.sh
 
 # Ensure JWT is in shared location
-cp ${JWT_PATH} /app/shared/jwt.hex
+#cp ${JWT_PATH} /app/shared/jwt.hex
 
 # Start beacond
 exec /app/run-beacond.sh

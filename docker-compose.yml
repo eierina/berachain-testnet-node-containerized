@@ -13,6 +13,7 @@ services:
     volumes:
       - beacond-data:/app/var/beacond
       - shared:/app/shared
+      - seed-data:/app/seed-data-${CHAIN_ID}
     ports:
       - "26657:26657"   # CL RPC
       - "26656:26656"   # CL P2P
@@ -29,6 +30,7 @@ services:
     volumes:
       - reth-data:/app/var/reth
       - shared:/app/shared
+      - seed-data:/app/seed-data-${CHAIN_ID}
     ports:
       - "8545:8545"     # EL RPC
       - "30303:30303"   # EL P2P
@@ -37,6 +39,13 @@ services:
       - beacond
 
 volumes:
+  seed-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/seed-data
+
   beacond-data:
     driver: local
     driver_opts:

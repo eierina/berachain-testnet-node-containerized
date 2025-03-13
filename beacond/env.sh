@@ -19,11 +19,7 @@ export BEACOND_CONFIG=$BEACOND_DATA/config  # can't change this. sorry.
 #export JWT_PATH=$BEACOND_CONFIG/jwt.hex
 export JWT_PATH=/app/shared/jwt.hex
 
-# need at least one of these
 export RETH_BIN=$(command -v reth || echo $(pwd)/reth)
-# export GETH_BIN=$(command -v geth || echo $(pwd)/geth)
-# export NETHERMIND_BIN=$(command -v Nethermind.Runner || echo $(pwd)/Nethermind.Runner)
-# export ERIGON_BIN=$(command -v erigon || echo $(pwd)/erigon)
 
 # Leave this blank to use the default ports for the various services.
 # Set this to a port number (for example, 30000) to 
@@ -57,7 +53,7 @@ else
     export CHAIN=mainnet-beacon-80094
     export CHAIN_ID=80094
 fi
-export SEED_DATA_DIR=$(pwd)/seed-data-$CHAIN_ID
+export SEED_DATA_DIR=/app/seed-data-$CHAIN_ID
 
 if [ -f "$SEED_DATA_DIR/el-bootnodes.txt" ]; then
     EL_BOOTNODES=$(grep '^enode://' "$SEED_DATA_DIR/el-bootnodes.txt"| tr '\n' ',' | sed 's/,$//')
@@ -78,22 +74,6 @@ if command >/dev/null -v $RETH_BIN; then
     export RETH_DATA=/app/var/reth
     export RETH_GENESIS_PATH=$RETH_DATA/genesis.json
 fi  
-
-# if command >/dev/null -v $GETH_BIN; then
-#     export GETH_DATA=$(pwd)/var/geth
-#     export GETH_GENESIS_PATH=$GETH_DATA/genesis.json
-# fi  
-
-# if command >/dev/null -v $NETHERMIND_BIN; then
-#     export NETHERMIND_CONFIG_DIR=$(pwd)/var/nethermind/config/
-#     export NETHERMIND_DATA_DIR=$(pwd)/var/nethermind/data/
-#     export NETHERMIND_GENESIS_PATH="${NETHERMIND_CONFIG_DIR}/eth-nether-genesis.json"
-# fi  
-
-# if command >/dev/null -v $ERIGON_BIN; then
-#     export ERIGON_DATA=$(pwd)/var/erigon
-#     export ERIGON_GENESIS_PATH=$ERIGON_DATA/genesis.json
-# fi  
 
 if ! command >/dev/null -v $RETH_BIN && ! command >/dev/null -v $GETH_BIN && ! command >/dev/null -v $NETHERMIND_BIN && ! command >/dev/null     -v $ERIGON_BIN ; then
     echo "Error: No execution client found in PATH"
