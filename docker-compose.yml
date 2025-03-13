@@ -16,8 +16,8 @@ services:
       - shared:/app/shared
       - seed-data:/app/seed-data-${CHAIN_ID}
     ports:
-      - "26657:26657"   # CL RPC
-      - "26656:26656"   # CL P2P
+      #- "32000:32000" # CL_ETHRPC_PORT
+      - "32001:32001" # CL_ETHP2P_PORT
 
   reth:
     build:
@@ -34,9 +34,9 @@ services:
       - shared:/app/shared
       - seed-data:/app/seed-data-${CHAIN_ID}
     ports:
-      - "8545:8545"     # EL RPC
-      - "30303:30303"   # EL P2P
-      - "30303:30303/udp" # Execution Layer P2P (UDP)      
+      - "32003:32003"     # EL_ETHRPC_PORT (PORT_BASE 32000)
+      - "32005:32005"     # EL_ETH_PORT (PORT_BASE 32000)
+      - "32005:32005/udp" # EL_ETH_PORT (PORT_BASE 32000)
     depends_on:
       - beacond
 

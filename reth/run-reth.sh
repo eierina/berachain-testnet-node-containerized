@@ -19,13 +19,15 @@ $RETH_BIN node 					\
 	--authrpc.port $EL_AUTHRPC_PORT		\
 	--authrpc.jwtsecret $JWT_PATH		\
 	--port $EL_ETH_PORT			\
-	--metrics $PROMETHEUS_PORT		\
+	--rpc.max-blocks-per-filter 0 \
 	--http					\
 	--http.addr 0.0.0.0			\
 	--http.port $EL_ETHRPC_PORT		\
-        --ipcpath /tmp/reth.ipc.$EL_ETHRPC_PORT \
-        --discovery.port $EL_ETHRPC_PORT	\
+	--discovery.port $EL_ETH_PORT	\
 	--http.corsdomain '*'			\
 	--log.file.directory $LOG_DIR		\
 	--engine.persistence-threshold 0	\
 	--engine.memory-block-buffer-target 0 
+
+	# --metrics $PROMETHEUS_PORT		\
+	# --ipcpath /tmp/reth.ipc.$EL_ETHRPC_PORT \
