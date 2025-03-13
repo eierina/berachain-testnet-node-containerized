@@ -1,4 +1,3 @@
-# reth/entrypoint.sh
 #!/bin/bash
 set -e
 
