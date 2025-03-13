@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   beacond:
-    build: ./beacond
+    build:
+      context: ./beacond
+      dockerfile: Dockerfile
     platform: linux/arm64
     environment:
       CHAIN_SPEC: testnet
@@ -18,7 +20,9 @@ services:
       - "26656:26656"   # CL P2P
 
   reth:
-    build: ./reth
+    build:
+      context: ./reth
+      dockerfile: Dockerfile
     platform: linux/arm64
     environment:
       CHAIN_SPEC: testnet
@@ -30,10 +34,28 @@ services:
     ports:
       - "8545:8545"     # EL RPC
       - "30303:30303"   # EL P2P
+      - "30303:30303/udp" # Execution Layer P2P (UDP)      
     depends_on:
       - beacond
 
 volumes:
   beacond-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/data/beacond
+  
   reth-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/data/reth
+
   shared:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/shared
