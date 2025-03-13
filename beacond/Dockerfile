@@ -26,7 +26,7 @@ COPY --from=builder /usr/local/bin/beacond /usr/local/bin/beacond
 #      env.sh \
 #      entrypoint.sh \
 #      ./
-COPY . /app/
+COPY beacond/*.sh /app/
 WORKDIR /app
 
 RUN chmod +x /app/*.sh

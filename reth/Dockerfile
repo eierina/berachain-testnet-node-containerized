@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
 #      env.sh \
 #      entrypoint.sh \
 #      ./
-COPY . /app/
+COPY reth/*.sh /app/
 
 WORKDIR /app
 
