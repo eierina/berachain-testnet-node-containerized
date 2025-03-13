@@ -1,5 +1,6 @@
 ## Cleanup
 docker compose down -v 
+
 sudo git clean -fxd
 
 ## Full clean rebuild
