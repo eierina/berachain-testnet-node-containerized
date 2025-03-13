@@ -5,7 +5,8 @@ services:
       dockerfile: beacond/Dockerfile
     platform: linux/arm64
     environment:
-      CHAIN_SPEC: testnet
+      CHAIN_SPEC: ${CHAIN_SPEC}
+      CHAIN_ID: ${CHAIN_ID}
       MONIKER_NAME: "docker-node"
       WALLET_ADDRESS_FEE_RECIPIENT: "0x9BcaA41DC32627776b1A4D714Eef627E640b3EF5"
       EL_ARCHIVE_NODE: "false"
@@ -24,7 +25,8 @@ services:
       dockerfile: reth/Dockerfile
     platform: linux/arm64
     environment:
-      CHAIN_SPEC: testnet
+      CHAIN_SPEC: ${CHAIN_SPEC}
+      CHAIN_ID: ${CHAIN_ID}
       EL_ARCHIVE_NODE: "false"
       JWT_PATH: "/app/shared/jwt.hex"
     volumes:
@@ -44,7 +46,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: ${PWD}/seed-data
+      device: ${PWD}/seed-data-${CHAIN_ID}
 
   beacond-data:
     driver: local
