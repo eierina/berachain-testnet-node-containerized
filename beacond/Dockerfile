@@ -1,5 +1,5 @@
 # beacond/Dockerfile
-FROM ubuntu:22.04 AS builder
+FROM --platform=linux/arm64 ubuntu:22.04 AS builder
 
 RUN apt-get update && apt-get install -y \
     wget ca-certificates \
@@ -13,7 +13,7 @@ RUN wget https://github.com/berachain/beacon-kit/releases/download/v1.1.3/beacon
     && mv beacond-v1.1.3-linux-arm64 /usr/local/bin/beacond \
     && chmod +x /usr/local/bin/beacond
 
-FROM ubuntu:22.04
+FROM --platform=linux/arm64 ubuntu:22.04
 
 RUN apt-get update && apt-get install -y \
     curl jq ca-certificates \

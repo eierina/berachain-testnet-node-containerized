@@ -1,5 +1,5 @@
 # reth/Dockerfile
-FROM ghcr.io/paradigmxyz/reth:v1.1.5
+FROM --platform=linux/arm64 ghcr.io/paradigmxyz/reth:v1.1.5
 
 RUN apt-get update && apt-get install -y \
     curl jq \
