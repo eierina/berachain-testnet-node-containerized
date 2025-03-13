@@ -15,8 +15,14 @@ while [ ! -f "${SEED_DATA_DIR}/eth-genesis.json" ]; do
   sleep 5
 done
 
-# Setup execution client
-/app/setup-reth.sh
+# Only initialize if genesis not already set up
+if [ ! -f "$RETH_GENESIS_PATH" ]; then
+  echo "Initializing execution client..."
+  /app/setup-reth.sh
+else
+  echo "✓ Execution client already initialized"
+  echo "  Genesis hash: $(jq -r '.hash' $RETH_GENESIS_PATH)"
+fi
 
 # Start reth
 exec /app/run-reth.sh
