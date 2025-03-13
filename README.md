@@ -1,3 +1,5 @@
+Built for Linux/arm64 only.
+
 ## Cleanup
 docker compose down -v 
 
