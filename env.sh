@@ -2,7 +2,7 @@
 
 ########
 # CHANGE THESE VALUES
-export CHAIN_SPEC=mainnet   # "mainnet" or "testnet"
+export CHAIN_SPEC=testnet
 export MONIKER_NAME=camembera
 export WALLET_ADDRESS_FEE_RECIPIENT=0x9BcaA41DC32627776b1A4D714Eef627E640b3EF5
 export EL_ARCHIVE_NODE=false # set to true if you want to run an archive node on CL and EL
@@ -10,11 +10,14 @@ export MY_IP=`curl -s ipv4.canhazip.com`
 
 ########
 # VALUES YOU MIGHT WANT TO CHANGE
-export LOG_DIR=$(pwd)/logs
+#export LOG_DIR=$(pwd)/logs
+export LOG_DIR=/app/logs
 export BEACOND_BIN=$(command -v beacond || echo $(pwd)/beacond)
-export BEACOND_DATA=$(pwd)/var/beacond
+#export BEACOND_DATA=$(pwd)/var/beacond
+export BEACOND_DATA=/app/var/beacond
 export BEACOND_CONFIG=$BEACOND_DATA/config  # can't change this. sorry.
-export JWT_PATH=$BEACOND_CONFIG/jwt.hex
+#export JWT_PATH=$BEACOND_CONFIG/jwt.hex
+export JWT_PATH=/app/shared/jwt.hex
 
 # need at least one of these
 export RETH_BIN=$(command -v reth || echo $(pwd)/reth)
@@ -71,7 +74,8 @@ else
 fi
 
 if command >/dev/null -v $RETH_BIN; then
-    export RETH_DATA=$(pwd)/var/reth
+    #export RETH_DATA=$(pwd)/var/reth
+    export RETH_DATA=/app/var/reth
     export RETH_GENESIS_PATH=$RETH_DATA/genesis.json
 fi  
 

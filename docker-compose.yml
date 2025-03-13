@@ -2,39 +2,38 @@ version: '3.8'
 
 services:
   beacond:
-    build:
-      context: .
-      dockerfile: Dockerfile.beacond
+    build: ./beacond
+    platform: linux/arm64
+    environment:
+      CHAIN_SPEC: testnet
+      MONIKER_NAME: "docker-node"
+      WALLET_ADDRESS_FEE_RECIPIENT: "0x9BcaA41DC32627776b1A4D714Eef627E640b3EF5"
+      EL_ARCHIVE_NODE: "false"
+      JWT_PATH: "/app/shared/jwt.hex"
     volumes:
-      - beacond_data:/app/var/beacond
-      - logs:/app/logs
-      - seed_data:/app/seed-data-80069
+      - beacond-data:/app/var/beacond
+      - shared:/app/shared
     ports:
-      - "26657:26657"  # RPC port
-      - "26656:26656"  # P2P port
-    networks:
-      - beranet
+      - "26657:26657"   # CL RPC
+      - "26656:26656"   # CL P2P
 
   reth:
-    build:
-      context: .
-      dockerfile: Dockerfile.reth
+    build: ./reth
+    platform: linux/arm64
+    environment:
+      CHAIN_SPEC: testnet
+      EL_ARCHIVE_NODE: "false"
+      JWT_PATH: "/app/shared/jwt.hex"
     volumes:
-      - reth_data:/app/var/reth
-      - logs:/app/logs
-      - seed_data:/app/seed-data-80069
-      - beacond_data:/app/var/beacond:ro  # Read-only access to JWT
+      - reth-data:/app/var/reth
+      - shared:/app/shared
     ports:
-      - "8545:8545"    # HTTP RPC port
-      - "30303:30303"  # P2P port
-    networks:
-      - beranet
+      - "8545:8545"     # EL RPC
+      - "30303:30303"   # EL P2P
+    depends_on:
+      - beacond
 
 volumes:
-  beacond_data:
-  reth_data:
-  logs:
-  seed_data:
-
-networks:
-  beranet:
+  beacond-data:
+  reth-data:
+  shared:
