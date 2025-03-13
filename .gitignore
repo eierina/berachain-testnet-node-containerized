@@ -1,0 +1,19 @@
+# Ignore all files/directories in data/beacond except .gitkeep
+data/beacond/*
+!data/beacond/.gitkeep
+
+# Ignore all files/directories in data/reth except .gitkeep
+data/reth/*
+!data/reth/.gitkeep
+
+# Ignore all files/directories in seed-data except .gitkeep
+seed-data/*
+!seed-data/.gitkeep
+
+# Ignore all files/directories in seed-data-80069 except .gitkeep
+seed-data-80069/*
+!seed-data-80069/.gitkeep
+
+# Ignore all files/directories in shared except .gitkeep
+shared/*
+!shared/.gitkeep
