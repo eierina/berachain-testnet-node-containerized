@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: beacond/Dockerfile
-    platform: linux/arm64
+    platform: linux/amd64
     environment:
       CHAIN_SPEC: ${CHAIN_SPEC}
       CHAIN_ID: ${CHAIN_ID}
@@ -23,7 +23,7 @@ services:
     build:
       context: .
       dockerfile: reth/Dockerfile
-    platform: linux/arm64
+    platform: linux/amd64
     environment:
       CHAIN_SPEC: ${CHAIN_SPEC}
       CHAIN_ID: ${CHAIN_ID}
